@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,6 @@ const Index = () => {
   const [newHabitName, setNewHabitName] = useState("");
   const { theme, setTheme } = useTheme();
 
-  // Load habits from localStorage on initial render
   useEffect(() => {
     const savedHabits = localStorage.getItem("habits");
     if (savedHabits) {
@@ -30,7 +28,6 @@ const Index = () => {
     }
   }, []);
 
-  // Save habits to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("habits", JSON.stringify(habits));
   }, [habits]);
@@ -88,13 +85,11 @@ const Index = () => {
       habits.map((habit) => {
         if (habit.id !== habitId) return habit;
 
-        // Check if an entry for today already exists
         const todayEntry = habit.entries.find(
           (entry) => entry.date.split("T")[0] === today
         );
 
         if (todayEntry) {
-          // Update existing entry count
           const updatedEntries = habit.entries.map((entry) => {
             if (entry.date.split("T")[0] === today) {
               return { ...entry, count: entry.count + 1 };
@@ -103,7 +98,6 @@ const Index = () => {
           });
           return { ...habit, entries: updatedEntries };
         } else {
-          // Add new entry for today
           const newEntry: HabitEntry = {
             date: new Date().toISOString(),
             count: 1,
@@ -142,7 +136,6 @@ const Index = () => {
       });
     }
     
-    // Reset the file input
     event.target.value = "";
   };
 
@@ -190,7 +183,7 @@ const Index = () => {
                     <Download className="mr-2 h-4 w-4" /> Export
                   </Button>
                   <label htmlFor="import-csv">
-                    <Button variant="outline" as="span" className="cursor-pointer">
+                    <Button variant="outline" className="cursor-pointer">
                       <Upload className="mr-2 h-4 w-4" /> Import
                     </Button>
                     <input
