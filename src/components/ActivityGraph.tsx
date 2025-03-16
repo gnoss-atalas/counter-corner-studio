@@ -141,13 +141,13 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
         <div className="flex">
           {/* Day of week labels */}
           <div className="w-8 text-xs text-muted-foreground">
-            <div className="h-[10px]"></div>
+            <div className="h-[10px] text-center">S</div>
             <div className="h-[10px] text-center">M</div>
-            <div className="h-[10px]"></div>
+            <div className="h-[10px] text-center">T</div>
             <div className="h-[10px] text-center">W</div>
-            <div className="h-[10px]"></div>
+            <div className="h-[10px] text-center">T</div>
             <div className="h-[10px] text-center">F</div>
-            <div className="h-[10px]"></div>
+            <div className="h-[10px] text-center">S</div>
           </div>
           
           {/* Calendar cells */}
