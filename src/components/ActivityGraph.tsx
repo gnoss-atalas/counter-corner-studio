@@ -1,4 +1,3 @@
-
 import { useMemo } from "react";
 import { Habit } from "@/types/habit";
 import { format, parseISO, eachDayOfInterval, subDays } from "date-fns";
@@ -16,13 +15,11 @@ interface DayData {
 
 const ActivityGraph = ({ habits }: ActivityGraphProps) => {
   const heatmapData = useMemo(() => {
-    // Create a map to store activity counts for each day
     const activityByDate = new Map<string, { count: number; habits: Set<string> }>();
     
-    // Fill in the map with habit data
     habits.forEach(habit => {
       habit.entries.forEach(entry => {
-        const dateStr = entry.date.split('T')[0]; // YYYY-MM-DD
+        const dateStr = entry.date.split('T')[0];
         const currentData = activityByDate.get(dateStr);
         
         if (currentData) {
@@ -37,7 +34,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
       });
     });
     
-    // Generate all dates for the last year (365 days)
     const today = new Date();
     const yearAgo = subDays(today, 364);
     
@@ -46,7 +42,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
       end: today
     });
     
-    // Convert to array with all days of the year
     return allDates.map(date => {
       const dateStr = format(date, 'yyyy-MM-dd');
       const activityData = activityByDate.get(dateStr);
@@ -60,7 +55,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
     });
   }, [habits]);
 
-  // Function to determine cell color based on count - enhanced with more gradient levels
   const getCellColor = (count: number) => {
     if (count === 0) return "bg-muted hover:bg-muted/80";
     if (count === 1) return "bg-green-50 dark:bg-green-950/20 hover:bg-green-100 dark:hover:bg-green-950/30";
@@ -75,7 +69,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
     return "bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/40";
   };
 
-  // Group heatmap data by weeks (for rendering rows)
   const weeks = useMemo(() => {
     const result: DayData[][] = [];
     let currentWeek: DayData[] = [];
@@ -83,7 +76,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
     heatmapData.forEach((day, index) => {
       currentWeek.push(day);
       
-      // Start a new week after 7 days
       if (currentWeek.length === 7 || index === heatmapData.length - 1) {
         result.push(currentWeek);
         currentWeek = [];
@@ -93,13 +85,12 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
     return result;
   }, [heatmapData]);
 
-  // Generate month labels for the top of the heatmap
   const monthLabels = useMemo(() => {
     const months: { month: string, index: number }[] = [];
     let currentMonth = '';
     
     heatmapData.forEach((day, index) => {
-      const month = day.date.substring(5, 7); // Get month part (MM) from YYYY-MM-DD
+      const month = day.date.substring(5, 7);
       
       if (month !== currentMonth) {
         months.push({ month: format(parseISO(day.date), 'MMM'), index });
@@ -121,7 +112,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
   return (
     <div className="w-full overflow-x-auto">
       <div className="min-w-[800px]">
-        {/* Month labels */}
         <div className="flex h-8 text-xs text-muted-foreground">
           <div className="w-8"></div>
           <div className="flex-1 flex">
@@ -142,9 +132,7 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
           </div>
         </div>
         
-        {/* Day labels and heatmap grid */}
         <div className="flex">
-          {/* Day of week labels */}
           <div className="w-8 text-xs text-muted-foreground">
             <div className="h-[10px] text-center">S</div>
             <div className="h-[10px] text-center">M</div>
@@ -155,7 +143,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
             <div className="h-[10px] text-center">S</div>
           </div>
           
-          {/* Calendar cells */}
           <div className="flex-1 flex gap-1">
             {weeks.map((week, weekIndex) => (
               <div key={weekIndex} className="flex flex-col gap-1">
@@ -171,7 +158,6 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
           </div>
         </div>
         
-        {/* Legend with enhanced gradient */}
         <div className="flex justify-end items-center gap-2 mt-4 text-xs text-muted-foreground">
           <span>Less</span>
           <div className="w-[10px] h-[10px] rounded-sm bg-muted"></div>

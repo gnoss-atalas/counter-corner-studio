@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Sun, Moon, Plus, Download, Upload } from "lucide-react";
 import HabitsList from "@/components/HabitsList";
 import ActivityGraph from "@/components/ActivityGraph";
+import UserGreeting from "@/components/UserGreeting";
 import { Habit, HabitEntry } from "@/types/habit";
 import { saveToCSV, loadFromCSV } from "@/utils/csvUtils";
 import { useTheme } from "@/hooks/useTheme";
@@ -14,6 +16,7 @@ import { useTheme } from "@/hooks/useTheme";
 const Index = () => {
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabitName, setNewHabitName] = useState("");
+  const [userName, setUserName] = useState("");
   const { theme, setTheme } = useTheme();
 
   useEffect(() => {
@@ -26,11 +29,20 @@ const Index = () => {
         setHabits([]);
       }
     }
+    
+    const storedName = localStorage.getItem("userName");
+    if (storedName) {
+      setUserName(storedName);
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("habits", JSON.stringify(habits));
   }, [habits]);
+
+  const handleNameSave = (name: string) => {
+    setUserName(name);
+  };
 
   const addHabit = () => {
     if (!newHabitName.trim()) {
@@ -60,6 +72,7 @@ const Index = () => {
       name: newHabitName,
       createdAt: new Date().toISOString(),
       entries: [],
+      reminders: [],
     };
 
     setHabits([...habits, newHabit]);
@@ -76,6 +89,14 @@ const Index = () => {
       title: "Success",
       description: "Habit deleted successfully",
     });
+  };
+
+  const updateHabit = (updatedHabit: Habit) => {
+    setHabits(
+      habits.map((habit) => 
+        habit.id === updatedHabit.id ? updatedHabit : habit
+      )
+    );
   };
 
   const trackHabit = (habitId: string) => {
@@ -154,6 +175,8 @@ const Index = () => {
           </div>
         </div>
 
+        <UserGreeting onNameSave={handleNameSave} />
+
         <div className="grid gap-6 md:grid-cols-1">
           <Card>
             <CardHeader>
@@ -202,6 +225,7 @@ const Index = () => {
                 habits={habits}
                 onTrack={trackHabit}
                 onDelete={deleteHabit}
+                onUpdate={updateHabit}
               />
             </CardContent>
           </Card>
