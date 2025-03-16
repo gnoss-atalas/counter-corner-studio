@@ -60,14 +60,19 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
     });
   }, [habits]);
 
-  // Function to determine cell color based on count
+  // Function to determine cell color based on count - enhanced with more gradient levels
   const getCellColor = (count: number) => {
     if (count === 0) return "bg-muted hover:bg-muted/80";
-    if (count <= 1) return "bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/50";
-    if (count <= 3) return "bg-green-200 dark:bg-green-800/40 hover:bg-green-300 dark:hover:bg-green-800/60";
-    if (count <= 5) return "bg-green-300 dark:bg-green-700/50 hover:bg-green-400 dark:hover:bg-green-700/70";
-    if (count <= 7) return "bg-green-400 dark:bg-green-600/60 hover:bg-green-500 dark:hover:bg-green-600/80";
-    return "bg-green-500 dark:bg-green-500/70 hover:bg-green-600 dark:hover:bg-green-500/90";
+    if (count === 1) return "bg-green-50 dark:bg-green-950/20 hover:bg-green-100 dark:hover:bg-green-950/30";
+    if (count === 2) return "bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/40";
+    if (count === 3) return "bg-green-200 dark:bg-green-800/40 hover:bg-green-300 dark:hover:bg-green-800/50";
+    if (count === 4) return "bg-green-300 dark:bg-green-700/50 hover:bg-green-400 dark:hover:bg-green-700/60";
+    if (count === 5) return "bg-green-400 dark:bg-green-600/60 hover:bg-green-500 dark:hover:bg-green-600/70";
+    if (count === 6) return "bg-green-500 dark:bg-green-500/70 hover:bg-green-600 dark:hover:bg-green-500/80";
+    if (count === 7) return "bg-green-600 dark:bg-green-400/70 hover:bg-green-700 dark:hover:bg-green-400/80";
+    if (count === 8) return "bg-green-700 dark:bg-green-300/70 hover:bg-green-800 dark:hover:bg-green-300/80";
+    if (count >= 9) return "bg-green-800 dark:bg-green-200/70 hover:bg-green-900 dark:hover:bg-green-200/80";
+    return "bg-green-100 dark:bg-green-900/30 hover:bg-green-200 dark:hover:bg-green-900/40";
   };
 
   // Group heatmap data by weeks (for rendering rows)
@@ -166,15 +171,19 @@ const ActivityGraph = ({ habits }: ActivityGraphProps) => {
           </div>
         </div>
         
-        {/* Legend */}
+        {/* Legend with enhanced gradient */}
         <div className="flex justify-end items-center gap-2 mt-4 text-xs text-muted-foreground">
           <span>Less</span>
           <div className="w-[10px] h-[10px] rounded-sm bg-muted"></div>
+          <div className="w-[10px] h-[10px] rounded-sm bg-green-50 dark:bg-green-950/20"></div>
           <div className="w-[10px] h-[10px] rounded-sm bg-green-100 dark:bg-green-900/30"></div>
           <div className="w-[10px] h-[10px] rounded-sm bg-green-200 dark:bg-green-800/40"></div>
           <div className="w-[10px] h-[10px] rounded-sm bg-green-300 dark:bg-green-700/50"></div>
           <div className="w-[10px] h-[10px] rounded-sm bg-green-400 dark:bg-green-600/60"></div>
           <div className="w-[10px] h-[10px] rounded-sm bg-green-500 dark:bg-green-500/70"></div>
+          <div className="w-[10px] h-[10px] rounded-sm bg-green-600 dark:bg-green-400/70"></div>
+          <div className="w-[10px] h-[10px] rounded-sm bg-green-700 dark:bg-green-300/70"></div>
+          <div className="w-[10px] h-[10px] rounded-sm bg-green-800 dark:bg-green-200/70"></div>
           <span>More</span>
         </div>
       </div>
